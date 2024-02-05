@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SunburstComponent } from './components/sunburst/sunburst.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HeatmapComponent } from './components/heatmap/heatmap.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SunburstComponent
+    SunburstComponent,
+    HeatmapComponent
   ],
   imports: [
     BrowserModule,
