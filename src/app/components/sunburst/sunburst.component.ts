@@ -110,7 +110,7 @@ export class SunburstComponent implements OnInit {
     const svg = d3
       .select(this.chartContainer.nativeElement)
       .append('svg')
-      .attr('viewBox', [0, 0, width, height]) // made the diagram responsive
+      .attr('viewBox', [0, 0, width, height]) // made the chart responsive
       .style('font', '10px sans-serif');
     // .attr('width', width)
     // .attr('height', height)
@@ -130,7 +130,7 @@ export class SunburstComponent implements OnInit {
         return color(d.data.name);
       })
       .attr('fill-opacity', (d: any) =>
-        arcVisible(d) ? (d.children ? 0.6 : 0.4) : 1
+        arcVisible(d) ? (d.children ? 0.6 : 0.4) : 0
       )
       .attr('d', (d: any) => arc(d));
     // .on('click', (event, d) => clicked(event, d));
@@ -178,38 +178,19 @@ export class SunburstComponent implements OnInit {
       //     d.x1 > d.x0
       //   } => ${d.y1 >= 3 && d.y0 >= 1 && d.x1 > d.x0}`
       // );
+      console.log(d);
       return d.y1 >= 3 && d.y0 >= 1 && d.x1 > d.x0;
     }
-    // function arcVisible(d: any) {
-    //   console.log(d);
-    //   return (
-    //     d &&
-    //     d.y1 !== undefined &&
-    //     d.y0 !== undefined &&
-    //     d.y1 <= 3 &&
-    //     d.y0 >= 1 &&
-    //     d.x1 > d.x0
-    //   );
-    // }
 
     function labelVisible(d: any) {
       return d.y1 <= 3 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
     }
 
-    // function labelTransform(d: any) {
-    //   const x = (((d.x0 + d.x1) / 2) * 180) / Math.PI;
-    //   const y = (d.y0 + d.y1) / 2;
-    //   console.log(x, y)
-    //   return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
-    // }
     function labelTransform(d: any) {
       const x = (((d.x0 + d.x1) / 2) * 180) / Math.PI;
-      const y = ((d.y0 + d.y1) / 2) * radius;
-      const rotation = x - 90;
-      const rotationThreshold = 180;
-      const isRotated = x < rotationThreshold ? 0 : 180;
+      const y = (d.y0 + d.y1) / 2;
       console.log(d.data.name, x, y);
-      return `rotate(${rotation}) translate(${y},${x}) rotate(${isRotated})`;
+      return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
     }
 
     function clicked(event: Event, p: any) {
@@ -238,7 +219,7 @@ export class SunburstComponent implements OnInit {
       console.log('Clicked:', p);
     }
 
-    this.chartContainer.nativeElement.appendChild(svg.node());
+    //this.chartContainer.nativeElement.appendChild(svg.node());
 
     this.sunburstService.getData().subscribe((data: any) => {
       // console.log(data)
